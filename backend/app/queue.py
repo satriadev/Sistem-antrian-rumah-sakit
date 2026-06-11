@@ -1,7 +1,7 @@
 import time
 import uuid
 
-class Paisen:
+class Pasien:
     def __init__(self, id, nama, umur, alamat, penyakit, kondisi, waktu):
         self.id = id
         self.nama = nama
@@ -60,9 +60,85 @@ class MinHeap():
             self.heapify_down(0)
         return min_item
     
-    def
+    def _heapify_up(self, i):
+        while i > 0:
+            p = self.parent(i)
+            if self.heap[i] < self.heap[p]:
+                self.heap[i], self.heap[p] = self.heap[p], self.heap[i]
+                i = p
+            else:
+                break
+    
+    def _heapify_down(self, i):
+        n = len(self.heap)
+        while 1:
+            l = self.left(i)
+            r  = self.right(i)
+            smallest = i
+
+            if l < n and self.heap[l] < self.heap[smallest]:
+                smallest = l
+            if r < n and self.heap[r] < self.heap[smallest]:
+                smallest = r
+
+            if smallest != i:
+                self.heap[i], self.heap[smallest] = self.heap[smallest], self.heap[i]
+                i = smallest
+            else:
+                break
+    
+    def remove(self, item):
+        try:
+            idx = self.heap.index(item)
+        except ValueError:
+            return False
+        
+        last = self.heap.pop()
+        if idx < len(self.heap):
+            self.heap[idx] = last
+            self._heapify_up(idx)
+            self._heapify_down(idx)
+        return True
+
+    def get_all_sorted(self):
+        return sorted(self.heap, key=lambda x: (x.kondisi, x.waktu))
 
 
 class Antrian:
     def __init__(self):
-        self heap = MinHeap()
+        self.heap = MinHeap()
+        self.data = {}
+
+    def store(self, nama, umur, alamat, penyakit, kondisi):
+        id = str(uuid.uuid4())[:8]
+        waktu = time.time()
+        pasien = Pasien(id, nama, umur, alamat, penyakit, kondisi)
+        self.heap.insert(pasien)
+        self.data[id] = pasien
+        return id
+    
+    def process(self):
+        pasien = self.heap.extract_min()
+        if pasien:
+            self.data.pop(pasien.id, None)
+        return pasien
+    
+    def show_all(self):
+        return self.heap.get_all_sorted()
+    
+    def delete(self, id):
+        if id in self.data:
+            pasien = self.data.pop(id)
+            return self.heap.remove(pasien)
+        return False
+    
+    def update_kondisi(self, id, new_kondisi):
+        if id in self.data:
+            pasien = self.data[id]
+            pasien.kondisi = new_kondisi
+            
+            self.heap.heap = []
+            for p in self.data.values():
+                self.data.insert(p)
+            return True
+        return False

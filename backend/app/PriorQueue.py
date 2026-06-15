@@ -30,6 +30,7 @@ class Pasien:
             "waktu": self.waktu,
         }
 
+
 class MinHeap():
     def __init__(self):
         self.heap = []

@@ -20,6 +20,8 @@ class PasienInput(BaseModel):
     alamat: str
     penyakit: str
     kondisi: int
+    waktu: str
+
 
 @app.post("/pasien")
 def tambah_pasien(p: PasienInput):
@@ -29,6 +31,7 @@ def tambah_pasien(p: PasienInput):
         alamat = p.alamat,
         penyakit=p.penyakit,
         kondisi = p.kondisi,
+
     )
     return {"status": "sukses", "id": id}
 

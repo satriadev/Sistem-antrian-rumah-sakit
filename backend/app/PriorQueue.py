@@ -49,7 +49,7 @@ class MinHeap():
     
     def insert(self, item):
         self.heap.append(item)
-        self.heapify_up(len(self.heap) - 1)
+        self._heapify_up(len(self.heap) - 1)
 
     def extract_min(self):
         if self.is_empty():
@@ -58,7 +58,7 @@ class MinHeap():
         last_item = self.heap.pop()
         if not self.is_empty():
             self.heap[0] = last_item
-            self.heapify_down(0)
+            self._heapify_down(0)
         return min_item
     
     def _heapify_up(self, i):
@@ -113,7 +113,7 @@ class Antrian:
     def store(self, nama, umur, alamat, penyakit, kondisi):
         id = str(uuid.uuid4())[:8]
         waktu = time.time()
-        pasien = Pasien(id, nama, umur, alamat, penyakit, kondisi)
+        pasien = Pasien(id, nama, umur, alamat, penyakit, kondisi, waktu)
         self.heap.insert(pasien)
         self.data[id] = pasien
         return id

@@ -45,14 +45,14 @@ class MinHeap():
         return (2*i) + 2
     
     def is_empty(self):
-        return len(self.heap)
+        return len(self.heap) == 0
     
     def insert(self, item):
         self.heap.append(item)
         self._heapify_up(len(self.heap) - 1)
 
     def extract_min(self):
-        if self.is_empty():
+        if self.is_empty() > 0:
             return None
         min_item = self.heap[0]
         last_item = self.heap.pop()

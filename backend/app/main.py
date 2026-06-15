@@ -42,7 +42,8 @@ def lihat_antrian():
 
 @app.post("/proses")
 def proses_pasien():
-    pasien = PasienInput()
+    pasien = antrian.process()
+    print(f'pasien yang belum pop: {pasien}')
     if pasien is None:
         raise HTTPException(status_code=404, detail="Antrian Kosong")
     return {"dipanggil": pasien.to_dict()}

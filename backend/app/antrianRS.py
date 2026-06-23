@@ -148,6 +148,7 @@ class Antrian:
     def __init__(self):
         self.heap = MinHeap()
         self.data = {}
+        self.riwayat = DoubleLinkedList()
 
     def store(self, nama, umur, alamat, penyakit, kondisi):
         id = str(uuid.uuid4())[:8]
@@ -172,13 +173,5 @@ class Antrian:
             return self.heap.remove(pasien)
         return False
     
-    def update_kondisi(self, id, new_kondisi):
-        if id in self.data:
-            pasien = self.data[id]
-            pasien.kondisi = new_kondisi
-            
-            self.heap.heap = []
-            for p in self.data.values():
-                self.data.insert(p)
-            return True
-        return False
+    def search(self, keyword: str):
+        return self.riwayat.linear_search(keyword)

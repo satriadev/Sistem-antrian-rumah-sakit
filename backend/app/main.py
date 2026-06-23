@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from backend.app.PriorQueue import Antrian
+from backend.app.antrianRS import Antrian
 
 app = FastAPI(title="Sistem Antrian IGD")
 
@@ -54,3 +54,10 @@ def hapus_pasien(id: str):
     if not berhasil:
         raise HTTPException(status_code=404, detail="ID Tidak Ditemukan")
     return {"status": "dihapus"}
+
+@app.get("/riwayat")
+def lihat_riwayat(search: str = Querry("", min_length=0)):
+    if search:
+        return antrian.linear_search(search)
+    else:
+        return antrian.riwayat.to_list_backward()

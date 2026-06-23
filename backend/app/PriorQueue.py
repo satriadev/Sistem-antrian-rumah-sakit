@@ -104,6 +104,45 @@ class MinHeap():
     def get_all_sorted(self):
         return sorted(self.heap, key=lambda x: (x.kondisi, x.waktu))
 
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+        self.prev = None
+
+class DoubleLinkedList:
+    def __init__(self):
+        self.head = None
+        self.tail = None
+        self.size = 0
+    
+    def prepend(self, data):
+        new = Node(data)
+        if not self.head:
+            self.head = self.tail = new
+        else:
+            new.next = self.head
+            self.head.prev = new
+            self.head = new
+        self.size += 1
+
+    def reverse(self):
+        result = []
+        curr = self.tail
+        while curr:
+            result.append(curr.data.to_dict())
+            curr = curr.prev
+        return result
+
+    def linear_search(self, keyword):
+        result = []
+        curr = self.head
+        keyword = keyword.lower()
+        while curr:
+            if keyword in curr.data.nama.lower():
+                result.append(curr.data.to_dict())
+            curr = curr.next
+        return result
 
 class Antrian:
     def __init__(self):

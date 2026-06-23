@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8000";
+const API_URL = "http://127.0.0.1:8000"
 
 document.getElementById("form-pasien").addEventListener("submit", tambahPasien);
 document.getElementById("btn-panggil").addEventListener("click", panggilPasien);

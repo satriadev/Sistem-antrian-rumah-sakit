@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Antrian IGD — Panel Petugas</title>
+    <!-- Tailwind CSS Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tabler Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in { animation: fadeIn 0.25s ease-out; }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.75); }
+        }
+        .pulse-dot { animation: pulse 1.8s ease-in-out infinite; }
+        /* Toast */
+        .toast-enter { animation: slideIn 0.25s ease-out; }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen font-sans text-gray-800">
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside class="w-56 bg-[#0F1B2D] text-white flex flex-col sticky top-0 h-screen overflow-y-auto">
+            <div class="px-4 py-6 border-b border-white/10">
+                <h1 class="text-sm font-semibold tracking-tight">IGD Antrian</h1>
+                <p class="text-[10px] text-blue-200 mt-1">Panel Petugas Triage</p>
+            </div>
+            <nav class="flex-1 px-3 py-4 space-y-1">
+                <p class="text-[10px] font-semibold uppercase text-gray-400 tracking-wider px-3 mb-2">Utama</p>
+                <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-teal-900/30 text-teal-300 font-medium text-sm">
+                    <i class="ti ti-layout-dashboard text-base"></i> Dasbor Antrian
+                </a>
+                <a href="riwayat.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-300 hover:bg-white/5 text-sm transition">
+                    <i class="ti ti-history text-base"></i> Riwayat Pasien
+                </a>
+            </nav>
+            <div class="px-3 py-4 border-t border-white/5 mt-auto space-y-1">
+                <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:bg-white/5 text-sm transition">
+                    <i class="ti ti-settings text-base"></i> Pengaturan
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main -->
+        <div class="flex-1 flex flex-col">
+            <!-- Topbar -->
+            <header class="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between sticky top-0 z-10">
+                <div>
+                    <h2 class="text-lg font-semibold text-gray-900">Dasbor Antrian</h2>
+                    <p id="topbar-date" class="text-xs text-gray-500 mt-1">Memuat...</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="inline-flex items-center gap-1.5 bg-red-50 text-red-700 border border-red-200 rounded-full px-3 py-1 text-xs font-medium">
+                        <i class="ti ti-alert-triangle text-sm"></i>
+                        <span id="kritis-count">0</span> Kritis
+                    </span>
+                    <span class="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 border border-blue-200 rounded-full px-3 py-1 text-xs font-medium">
+                        <i class="ti ti-users text-sm"></i>
+                        <span id="antrian-count">0</span> Menunggu
+                    </span>
+                    <span class="inline-flex items-center gap-1.5 bg-green-50 text-green-700 border border-green-200 rounded-full px-3 py-1 text-xs font-medium">
+                        <i class="ti ti-circle-check text-sm"></i> Aktif
+                    </span>
+                </div>
+            </header>
+
+            <!-- Main Content Grid -->
+            <div class="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-0">
+                <!-- Left Panel: Form + Recent History -->
+                <div class="bg-white border-r border-gray-200 p-6 overflow-y-auto">
+                    <h3 class="text-xs font-semibold uppercase text-gray-400 tracking-wider mb-4 flex items-center gap-2">
+                        <i class="ti ti-user-plus text-base"></i> Daftarkan Pasien Baru
+                    </h3>
+
+                    <form id="form-pasien" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600 mb-1">Nama Lengkap</label>
+                            <input type="text" id="nama" required placeholder="Nama pasien"
+                                class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-medium text-gray-600 mb-1">Umur</label>
+                                <input type="number" id="umur" required min="0" max="120" placeholder="Umur"
+                                    class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-600 mb-1">Level Triage</label>
+                                <select id="kondisi" required
+                                    class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none">
+                                    <option value="">Pilih</option>
+                                    <option value="1">1 — Kritis</option>
+                                    <option value="2">2 — Darurat</option>
+                                    <option value="3">3 — Mendesak</option>
+                                    <option value="4">4 — Ringan</option>
+                                    <option value="5">5 — Non-darurat</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600 mb-1">Keluhan Utama</label>
+                            <input type="text" id="penyakit" placeholder="Cth: Patah tulang, sesak napas"
+                                class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600 mb-1">Alamat</label>
+                            <input type="text" id="alamat" placeholder="Alamat pasien"
+                                class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none">
+                        </div>
+                        <button type="submit"
+                            class="w-full bg-[#0F1B2D] text-white font-semibold py-2.5 rounded-lg text-sm hover:bg-[#1A3A5C] transition flex items-center justify-center gap-2">
+                            <i class="ti ti-circle-plus text-base"></i> Daftarkan Pasien
+                        </button>
+                    </form>
+
+                    <hr class="my-6 border-gray-200">
+
+                    <!-- Recent History (local) -->
+                    <h3 class="text-xs font-semibold uppercase text-gray-400 tracking-wider mb-4 flex items-center gap-2">
+                        <i class="ti ti-checks text-base"></i> Selesai Ditangani
+                    </h3>
+                    <div id="riwayat-list">
+                        <p class="text-xs text-gray-400 italic">Belum ada riwayat shift ini.</p>
+                    </div>
+                </div>
+
+                <!-- Right Panel: Queue + Action -->
+                <div class="lg:col-span-2 flex flex-col bg-gray-50">
+                    <!-- Queue -->
+                    <div class="flex-1 p-6 overflow-y-auto">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xs font-semibold uppercase text-gray-400 tracking-wider flex items-center gap-2">
+                                <i class="ti ti-list-numbers text-base"></i> Antrian Aktif
+                            </h3>
+                            <span id="jumlah-antrian" class="bg-[#0F1B2D] text-white text-xs font-semibold px-2.5 py-0.5 rounded-full">0</span>
+                        </div>
+                        <div id="antrian-list" class="space-y-2">
+                            <!-- Empty state -->
+                            <div class="text-center py-12 text-gray-400">
+                                <i class="ti ti-users-group text-4xl block mb-2 opacity-40"></i>
+                                <p class="text-sm italic">Belum ada pasien.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Panel -->
+                    <div class="bg-white border-t border-gray-200 p-6">
+                        <h3 class="text-xs font-semibold uppercase text-gray-400 tracking-wider mb-3 flex items-center gap-2">
+                            <i class="ti ti-activity-heartbeat text-base"></i> Sedang Ditangani
+                        </h3>
+                        <div id="sedang-ditangani" class="bg-teal-50 border border-teal-200 rounded-lg p-4 mb-4 min-h-[80px] flex items-center justify-center">
+                            <p class="text-sm text-gray-500 italic">— Belum ada pasien ditangani —</p>
+                        </div>
+                        <button id="btn-panggil"
+                            class="w-full bg-red-600 text-white font-semibold py-3 rounded-lg text-sm hover:bg-red-700 transition flex items-center justify-center gap-2">
+                            <i class="ti ti-bell-ringing text-lg"></i> Panggil Pasien Berikutnya
+                        </button>
+                        <p id="pesan-panggil" class="text-xs text-gray-500 text-center mt-3 min-h-[18px]"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    <script src="antrian.js"></script>
+</body>
+</html>

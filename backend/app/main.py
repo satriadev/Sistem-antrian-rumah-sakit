@@ -61,3 +61,8 @@ def lihat_riwayat(search: str = Query("", min_length=0)):
         return antrian.search(search)
     else:
         return antrian.riwayat.reverse()
+
+@app.delete("/riwayat/clear")
+def clear_cache():
+    antrian.clearRiwayat()
+    return {"status": "sukses", "pesan": "Riwayat berhasil dibersihkan."}

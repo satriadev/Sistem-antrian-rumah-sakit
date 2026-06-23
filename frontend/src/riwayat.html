@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Riwayat Pasien — IGD</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="output.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
     <style>
         @keyframes fadeIn {
@@ -65,10 +65,14 @@
 
                 <!-- Daftar Riwayat -->
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200">
-                    <div class="px-6 py-4 border-b border-gray-100">
+                    <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
                         <h3 class="text-sm font-semibold text-gray-700 flex items-center gap-2">
                             <i class="ti ti-list-check text-base"></i> Daftar Riwayat
                         </h3>
+                        <button id="clearBtn"
+                            class="bg-red-500 text-white px-3 py-1.5 cursor-pointer rounded-lg font-medium text-xs hover:bg-red-600 transition flex items-center gap-2">
+                            <i class="ti ti-trash text-sm"></i> Hapus Semua
+                        </button>
                     </div>
                     <div id="riwayatList" class="p-6 space-y-3 max-h-150 overflow-y-auto">
                         <p class="text-sm text-gray-400 italic text-center py-8">Memuat data...</p>

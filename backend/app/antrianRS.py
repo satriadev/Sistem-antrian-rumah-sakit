@@ -143,6 +143,12 @@ class DoubleLinkedList:
                 result.append(curr.data.to_dict())
             curr = curr.next
         return result
+    
+    def clearCache(self):
+       self.head = None
+       self.tail = None
+       self.size = 0
+       return True
 
 class Antrian:
     def __init__(self):
@@ -176,3 +182,7 @@ class Antrian:
     
     def search(self, keyword: str):
         return self.riwayat.linear_search(keyword)
+
+    def clearRiwayat(self):
+        self.riwayat.clearCache()   
+        return True

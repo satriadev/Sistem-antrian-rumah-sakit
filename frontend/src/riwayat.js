@@ -94,5 +94,15 @@ document.getElementById("searchInput").addEventListener("keyup", (e) => {
     }
 });
 
+document.getElementById("clearBtn").addEventListener("click", () => {
+    if(confirm("Anda yakin ingin menghapus semua riwayat?")) {
+        fetch(`${API_URL}/riwayat/clear`, {
+            method: "DELETE"
+        })
+        .then(() => loadRiwayat(""))
+        .catch(() => alert("Gagal menghapus riwayat."))
+    }
+});
+
 // ── Inisialisasi ──
 loadRiwayat();

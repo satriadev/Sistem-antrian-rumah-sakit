@@ -58,6 +58,6 @@ def hapus_pasien(id: str):
 @app.get("/riwayat")
 def lihat_riwayat(search: str = Query("", min_length=0)):
     if search:
-        return antrian.linear_search(search)
+        return antrian.search(search)
     else:
         return antrian.riwayat.reverse()

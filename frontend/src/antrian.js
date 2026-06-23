@@ -79,7 +79,7 @@ function renderAntrian(daftar) {
 
     listEl.innerHTML = daftar.map((p, i) => `
         <div class="animate-fade-in flex bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow transition-shadow">
-            <div class="w-1 ${triageClass(p.kondisi)} flex-shrink-0"></div>
+            <div class="w-1 ${triageClass(p.kondisi)} shrink-0"></div>
             <div class="flex items-center justify-center w-12 text-lg font-semibold text-gray-300 border-r border-gray-100">
                 ${String(i+1).padStart(2,'0')}
             </div>
@@ -109,7 +109,8 @@ document.getElementById("form-pasien").addEventListener("submit", async function
         umur: document.getElementById("umur").value,
         alamat: document.getElementById("alamat").value.trim(),
         penyakit: document.getElementById("penyakit").value.trim(),
-        kondisi: parseInt(document.getElementById("kondisi").value)
+        kondisi: parseInt(document.getElementById("kondisi").value),
+        waktu: new Date()
     };
     try {
         const res = await fetch(`${API_URL}/pasien`, {
@@ -202,5 +203,5 @@ function renderRiwayatLokal() {
 }
 
 // ── Polling ──
-setInterval(loadAntrian, 3000);
+setInterval(loadAntrian, 1000);
 loadAntrian();

@@ -58,7 +58,7 @@ function renderRiwayat(daftar) {
 
     listEl.innerHTML = daftar.map(p => `
         <div class="animate-fade-in flex items-start gap-4 p-4 border border-gray-100 rounded-lg bg-white hover:shadow-sm transition">
-            <div class="w-9 h-9 bg-teal-50 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+            <div class="w-9 h-9 bg-teal-50 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
                 <i class="ti ti-circle-check text-teal-700 text-lg"></i>
             </div>
             <div class="flex-1 min-w-0">

@@ -162,6 +162,7 @@ class Antrian:
         pasien = self.heap.extract_min()
         if pasien:
             self.data.pop(pasien.id, None)
+            self.riwayat.prepend(pasien)
         return pasien
     
     def show_all(self):

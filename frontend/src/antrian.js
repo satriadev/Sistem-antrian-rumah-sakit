@@ -26,7 +26,7 @@ function showToast(msg, type = 'default') {
 
 // ── Label & Styling ──
 function labelKondisi(k) {
-    return {1:"Kritis",2:"Darurat",3:"Mendesak",4:"Ringan",5:"Non-darurat"}[k] || "—";
+    return {1:"Kritis",2:"Darurat",3:"Mendesak",4:"Ringan",5:"Non-darurat"}[k] || " - ";
 }
 
 function triageClass(k) {
@@ -42,62 +42,86 @@ function badgeClass(k) {
 // ── Format waktu dari ISO string ──
 function fmtWaktu(iso) {
     if (!iso) return "";
-    return new Date(iso).toLocaleTimeString("id-ID", {hour:"2-digit", minute:"2-digit"});
+    const val = Number(iso);
+    const d = !isNaN(val) ? new Date(val * 1000) : new Date(iso);
+    return d.toLocaleTimeString("id-ID", {hour:"2-digit", minute:"2-digit"});
 }
 
 // ── Load Antrian ──
 async function loadAntrian() {
+    const tbodyEl = document.getElementById("antrian-tbody");
     try {
         const res = await fetch(`${API_URL}/antrian`);
         const data = await res.json();
         renderAntrian(data);
     } catch (err) {
         console.error("Gagal memuat antrian:", err);
+        if (tbodyEl) {
+            tbodyEl.innerHTML = `
+                <tr>
+                    <td colspan="5" class="text-sm text-red-500 text-center py-12">
+                        Gagal memuat antrian. Pastikan server backend aktif.
+                    </td>
+                </tr>`;
+        }
     }
 }
 
 function renderAntrian(daftar) {
-    const listEl = document.getElementById("antrian-list");
+    const tbodyEl = document.getElementById("antrian-tbody");
+    if (!tbodyEl) return;
+
     const jumlahEl = document.getElementById("jumlah-antrian");
     const countEl = document.getElementById("antrian-count");
     const kritisEl = document.getElementById("kritis-count");
 
     const total = daftar.length;
     const kritis = daftar.filter(p => p.kondisi === 1 || p.kondisi === 2).length;
-    jumlahEl.textContent = total;
+    
+    if (jumlahEl) jumlahEl.textContent = total;
     if (countEl) countEl.textContent = total;
     if (kritisEl) kritisEl.textContent = kritis;
 
     if (total === 0) {
-        listEl.innerHTML = `
-            <div class="text-center py-12 text-gray-400">
-                <i class="ti ti-users-group text-4xl block mb-2 opacity-40"></i>
-                <p class="text-sm">Belum ada pasien<br>Tambahkan melalui form</p>
-            </div>`;
+        tbodyEl.innerHTML = `
+            <tr>
+                <td colspan="5" class="text-sm text-gray-400 text-center py-12">
+                    <i class="ti ti-users-group text-4xl block mb-2 opacity-40 mx-auto"></i>
+                    Belum ada pasien<br><span class="text-xs text-gray-400">Tambahkan melalui form</span>
+                </td>
+            </tr>`;
         return;
     }
 
-    listEl.innerHTML = daftar.map((p, i) => `
-        <div class="animate-fade-in flex bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow transition-shadow">
-            <div class="w-1 ${triageClass(p.kondisi)} shrink-0"></div>
-            <div class="flex items-center justify-center w-12 text-lg font-semibold text-gray-300 border-r border-gray-100">
-                ${String(i+1).padStart(2,'0')}
-            </div>
-            <div class="p-3 flex-1 min-w-0">
-                <p class="font-semibold text-sm text-gray-900 truncate">${p.nama}, ${p.umur} th</p>
-                <div class="flex items-center gap-2 mt-1">
-                    <span class="text-xs px-2 py-0.5 rounded border ${badgeClass(p.kondisi)} font-medium">
-                        ${labelKondisi(p.kondisi)}
-                    </span>
-                    <span class="text-xs text-gray-600 flex items-center gap-1">
-                        <i class="ti ti-stethoscope text-sm"></i> ${p.penyakit || "—"}
-                    </span>
+    tbodyEl.innerHTML = daftar.map((p, i) => `
+        <tr class="animate-fade-in hover:bg-gray-50/80 transition-colors border-b border-gray-100 last:border-none">
+            <td class="px-4 py-3 whitespace-nowrap text-center">
+                <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-gray-700 font-semibold text-sm">
+                    ${String(i+1).padStart(2,'0')}
+                </span>
+            </td>
+            <td class="px-4 py-3 whitespace-nowrap">
+                <div class="font-semibold text-gray-900 text-sm">${p.nama}</div>
+                <div class="text-xs text-gray-500">${p.umur} th</div>
+            </td>
+            <td class="px-4 py-3 whitespace-nowrap">
+                <span class="inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full border ${badgeClass(p.kondisi)} font-medium">
+                    <span class="w-2 h-2 rounded-full ${triageClass(p.kondisi)}"></span>
+                    ${labelKondisi(p.kondisi)}
+                </span>
+            </td>
+            <td class="px-4 py-3">
+                <div class="text-sm text-gray-700 flex items-center gap-1.5">
+                    <i class="ti ti-stethoscope text-gray-400 text-base"></i>
+                    <span class="truncate max-w-[150px]" title="${p.penyakit || ''}">${p.penyakit || "—"}</span>
                 </div>
-            </div>
-            <div class="flex items-center px-3 text-xs text-gray-400 gap-1">
-                <i class="ti ti-clock text-xs"></i> ${fmtWaktu(p.waktu)}
-            </div>
-        </div>
+            </td>
+            <td class="px-4 py-3 whitespace-nowrap">
+                <div class="text-xs text-gray-500 flex items-center gap-1">
+                    <i class="ti ti-clock text-xs"></i> ${fmtWaktu(p.waktu)}
+                </div>
+            </td>
+        </tr>
     `).join("");
 }
 
@@ -132,7 +156,7 @@ document.getElementById("form-pasien").addEventListener("submit", async function
 });
 
 // ── Panggil Pasien ──
-const riwayatLokal = []; // menyimpan riwayat sementara untuk tampilan kiri
+// const riwayatLokal = []; // menyimpan riwayat sementara untuk tampilan kiri
 
 document.getElementById("btn-panggil").addEventListener("click", async function() {
     const ditanganiEl = document.getElementById("sedang-ditangani");
@@ -154,54 +178,27 @@ document.getElementById("btn-panggil").addEventListener("click", async function(
 
         // Tampilkan di panel "Sedang Ditangani"
         ditanganiEl.innerHTML = `
-            <div class="flex items-center gap-2 mb-2">
+            <div class="flex items-center gap-2 mr-2">
                 <span class="relative flex h-3 w-3">
                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
                     <span class="relative inline-flex rounded-full h-3 w-3 bg-teal-500"></span>
                 </span>
                 <span class="text-xs font-semibold text-teal-700 bg-white px-2 py-0.5 rounded-full border border-teal-200">Ditangani sekarang</span>
             </div>
-            <p class="font-semibold text-teal-900">${p.nama}, ${p.umur} tahun</p>
+            <p class="font-semibold text-teal-900 mr-2">${p.nama}</p>
             <p class="text-sm text-teal-700 flex items-center gap-1 mt-1">
                 <i class="ti ti-stethoscope text-base"></i> ${p.penyakit || "—"}
-            </p>
-            <p class="text-sm text-teal-700 flex items-center gap-1">
-                <i class="ti ti-map-pin text-base"></i> ${p.alamat || "—"}
             </p>
         `;
         pesanEl.textContent = "";
         showToast(`${p.nama} dipanggil untuk ditangani.`, "success");
-
-        // Tambahkan ke riwayat lokal (tampilan kiri)
-        riwayatLokal.unshift(p);
-        if (riwayatLokal.length > 8) riwayatLokal.pop();
-        renderRiwayatLokal();
-
+        
         loadAntrian();
     } catch (err) {
         pesanEl.textContent = "Tidak dapat terhubung ke server.";
     }
 });
 
-function renderRiwayatLokal() {
-    const container = document.getElementById("riwayat-list");
-    if (riwayatLokal.length === 0) {
-        container.innerHTML = '<p class="text-xs text-gray-400 italic">Belum ada riwayat shift ini.</p>';
-        return;
-    }
-    container.innerHTML = riwayatLokal.map(p => `
-        <div class="flex items-center gap-3 py-2 border-b border-gray-100 last:border-0 animate-fade-in">
-            <div class="w-8 h-8 bg-teal-50 rounded-lg flex items-center justify-center text-teal-700">
-                <i class="ti ti-circle-check text-sm"></i>
-            </div>
-            <div class="flex-1 min-w-0">
-                <p class="text-sm font-medium text-gray-800">${p.nama}, ${p.umur} th</p>
-                <p class="text-xs text-gray-500">${p.penyakit || "—"} · ${fmtWaktu(p.waktu)}</p>
-            </div>
-        </div>
-    `).join("");
-}
- 
 // ── Polling ──
-setInterval(loadAntrian, 1000);
+// setInterval(loadAntrian, 1000);  
 loadAntrian();

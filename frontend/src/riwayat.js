@@ -23,7 +23,8 @@ function triageClass(k) {
 
 function fmtWaktu(iso) {
     if (!iso) return "";
-    const d = new Date(iso);
+    const val = Number(iso);
+    const d = !isNaN(val) ? new Date(val * 1000) : new Date(iso);
     return d.toLocaleString("id-ID", { day:"numeric", month:"short", year:"numeric", hour:"2-digit", minute:"2-digit" });
 }
 
@@ -38,7 +39,7 @@ async function loadRiwayat(search = "") {
         const data = await res.json();
 
         if (search) {
-            infoEl.textContent = `Hasil pencarian untuk "${search}" — ${data.length} ditemukan`;
+            infoEl.textContent = `Hasil pencarian untuk "${search}" - ${data.length} ditemukan`;
         } else {
             infoEl.textContent = "";
         }
@@ -52,7 +53,7 @@ async function loadRiwayat(search = "") {
 function renderRiwayat(daftar) {
     const tbodyEl = document.getElementById("riwayatTableBody");
     if (daftar.length === 0) {
-        tbodyEl.innerHTML = '<tr><td colspan="5" class="text-sm text-gray-400 italic text-center py-8">Belum ada riwayat penanganan.</td></tr>';
+        tbodyEl.innerHTML = '<tr><td colspan="5" class="text-sm text-gray-400 text-center py-8">Belum ada riwayat penanganan.</td></tr>';
         return;
     }
 

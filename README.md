@@ -1,15 +1,24 @@
 # 🏥 Sistem Antrian IGD Rumah Sakit
 
+Projek ini dibuat guna memenuhi final project Mata Kuliah Struktur Data
+
+Identitas Kelompok:
+
+| Nama | NIM |
+|:---:|:---:|
+| Pande Putu Agus Diva Surya Dinata. L. | 2508561001 | 
+| I Putu Satria Mahatama | 2508561017 | 
+
 Aplikasi sistem antrian pasien Instalasi Gawat Darurat (IGD) berbasis web dengan prioritas berdasarkan tingkat kegawatan (triage). Pasien dengan kondisi lebih kritis akan diprioritaskan untuk ditangani terlebih dahulu.
 
 ## ✨ Fitur Utama
 
-- **Pendaftaran Pasien** — Input data pasien baru dengan level triage (1-5)
-- **Antrian Prioritas** — Pasien diurutkan otomatis berdasarkan tingkat kegawatan menggunakan **Min Heap**
-- **Panggil Pasien** — Memanggil pasien berikutnya sesuai prioritas untuk ditangani
-- **Riwayat Penanganan** — Melihat daftar pasien yang sudah ditangani, disimpan menggunakan **Double Linked List**
-- **Pencarian Riwayat** — Mencari pasien berdasarkan nama pada riwayat penanganan (Linear Search)
-- **Hapus Riwayat** — Menghapus seluruh data riwayat penanganan
+- **Pendaftaran Pasien**: Input data pasien baru dengan level triage (1-5)
+- **Antrian Prioritas**: Pasien diurutkan otomatis berdasarkan tingkat kegawatan menggunakan **Min Heap**
+- **Panggil Pasien**: Memanggil pasien berikutnya sesuai prioritas untuk ditangani
+- **Riwayat Penanganan**: Melihat daftar pasien yang sudah ditangani, disimpan menggunakan **Double Linked List**
+- **Pencarian Riwayat**: Mencari pasien berdasarkan nama pada riwayat penanganan (Linear Search)
+- **Hapus Riwayat**: Menghapus seluruh data riwayat penanganan
 
 ## 🏗️ Arsitektur & Struktur Data
 

@@ -96,7 +96,6 @@ function renderRiwayat(daftar) {
     `).join("");
 }
 
-// ── Event Listener ──
 document.getElementById("btnSearch").addEventListener("click", () => {
     const keyword = document.getElementById("searchInput").value.trim();
     loadRiwayat(keyword);

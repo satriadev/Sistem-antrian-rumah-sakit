@@ -4,9 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sistem Antrian IGD — Panel Petugas</title>
-    <!-- Tailwind CSS Play CDN -->
     <link rel="stylesheet" href="output.css">
-    <!-- Tabler Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
     <style>
       @keyframes fadeIn {
@@ -65,9 +63,6 @@
           <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-teal-900/30 text-teal-300 font-medium text-sm"> <i class="ti ti-layout-dashboard text-base"></i> Dasbor Antrian </a>
           <a href="riwayat.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-300 hover:bg-white/5 text-sm transition"> <i class="ti ti-history text-base"></i> Riwayat Pasien </a>
         </nav>
-        <div class="px-3 py-4 border-t border-white/5 mt-auto space-y-1">
-          <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:bg-white/5 text-sm transition"> <i class="ti ti-settings text-base"></i> Pengaturan </a>
-        </div>
       </aside>
 
       <!-- Main -->
@@ -75,7 +70,7 @@
         <!-- Topbar -->
         <header class="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between sticky top-0 z-10">
           <div>
-            <h2 class="text-lg font-semibold text-gray-900">Dasbor Antrian</h2>
+            <h1 class="text-2xl font-bold text-gray-900">Dashboard Antrian</h1>
             <p id="topbar-date" class="text-xs text-gray-500 mt-1">Memuat...</p>
           </div>
           <div class="flex items-center gap-3">
@@ -119,11 +114,11 @@
                   <label class="block text-xs font-medium text-gray-600 mb-1">Level Triage</label>
                   <select id="kondisi" required class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none">
                     <option value="">Pilih</option>
-                    <option value="1">1 — Kritis</option>
-                    <option value="2">2 — Darurat</option>
-                    <option value="3">3 — Mendesak</option>
-                    <option value="4">4 — Ringan</option>
-                    <option value="5">5 — Non-darurat</option>
+                    <option value="1">1 - Kritis</option>
+                    <option value="2">2 - Darurat</option>
+                    <option value="3">3 - Mendesak</option>
+                    <option value="4">4 - Ringan</option>
+                    <option value="5">5 - Non-darurat</option>
                   </select>
                 </div>
               </div>
@@ -161,7 +156,7 @@
                 <!-- Empty state -->
                 <div class="text-center py-12 text-gray-400">
                   <i class="ti ti-users-group text-4xl block mb-2 opacity-40"></i>
-                  <p class="text-sm italic">Belum ada pasien.</p>
+                  <p class="text-sm">Belum ada pasien.</p>
                 </div>
               </div>
             </div>
@@ -170,9 +165,9 @@
             <div class="bg-white border-t border-gray-200 p-6">
               <h3 class="text-xs font-semibold uppercase text-gray-400 tracking-wider mb-3 flex items-center gap-2"><i class="ti ti-activity-heartbeat text-base"></i> Sedang Ditangani</h3>
               <div id="sedang-ditangani" class="bg-teal-50 border border-teal-200 rounded-lg p-4 mb-4 min-h-20 flex items-center justify-center">
-                <p class="text-sm text-gray-500 italic">— Belum ada pasien ditangani —</p>
+                <p class="text-sm text-gray-500">Belum ada pasien ditangani</p>
               </div>
-              <button id="btn-panggil" class="w-full bg-red-600 text-white font-semibold py-3 rounded-lg text-sm hover:bg-red-700 transition flex items-center justify-center gap-2">
+              <button id="btn-panggil" class="cursor-pointer w-full bg-red-600 text-white font-semibold py-3 rounded-lg text-sm hover:bg-red-700 transition flex items-center justify-center gap-2">
                 <i class="ti ti-bell-ringing text-lg"></i> Panggil Pasien Berikutnya
               </button>
               <p id="pesan-panggil" class="text-xs text-gray-500 text-center mt-3 min-h-4.5"></p>

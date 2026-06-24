@@ -6,7 +6,7 @@ const API_URL = "http://127.0.0.1:8000";
     const bulan = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
     const now = new Date();
     document.getElementById("topbar-date").textContent = 
-        `${hari[now.getDay()]}, ${now.getDate()} ${bulan[now.getMonth()]} ${now.getFullYear()} — Shift Pagi`;
+        `${hari[now.getDay()]}, ${now.getDate()} ${bulan[now.getMonth()]} ${now.getFullYear()}`;
 })();
 
 // ── Toast ──
@@ -72,7 +72,7 @@ function renderAntrian(daftar) {
         listEl.innerHTML = `
             <div class="text-center py-12 text-gray-400">
                 <i class="ti ti-users-group text-4xl block mb-2 opacity-40"></i>
-                <p class="text-sm italic">Belum ada pasien. Tambahkan melalui form.</p>
+                <p class="text-sm">Belum ada pasien<br>Tambahkan melalui form</p>
             </div>`;
         return;
     }
@@ -140,9 +140,9 @@ document.getElementById("btn-panggil").addEventListener("click", async function(
     try {
         const res = await fetch(`${API_URL}/proses`, { method: "POST" });
         if (res.status === 404) {
-            const err = await res.json();
-            pesanEl.textContent = err.detail || "Antrian kosong.";
-            ditanganiEl.innerHTML = '<p class="text-sm text-gray-500 italic">— Antrian kosong —</p>';
+            // const err = await res.json();
+            // pesanEl.textContent = err.detail || "Antrian kosong.";  
+            ditanganiEl.innerHTML = '<p class="text-sm text-gray-500">Antrian kosong</p>';
             return;
         }
         if (!res.ok) {
@@ -201,7 +201,7 @@ function renderRiwayatLokal() {
         </div>
     `).join("");
 }
-
+ 
 // ── Polling ──
 setInterval(loadAntrian, 1000);
 loadAntrian();

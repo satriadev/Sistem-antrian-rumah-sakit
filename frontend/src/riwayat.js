@@ -30,7 +30,7 @@ function fmtWaktu(iso) {
 // ── Fetch Riwayat ──
 async function loadRiwayat(search = "") {
     const infoEl = document.getElementById("searchInfo");
-    const listEl = document.getElementById("riwayatList");
+    const tbodyEl = document.getElementById("riwayatTableBody");
 
     try {
         const url = search ? `${API_URL}/riwayat?search=${encodeURIComponent(search)}` : `${API_URL}/riwayat`;
@@ -45,40 +45,55 @@ async function loadRiwayat(search = "") {
 
         renderRiwayat(data);
     } catch (err) {
-        listEl.innerHTML = '<p class="text-sm text-red-500 text-center py-8">Gagal memuat riwayat.</p>';
+        tbodyEl.innerHTML = '<tr><td colspan="5" class="text-sm text-red-500 text-center py-8">Gagal memuat riwayat.</td></tr>';
     }
 }
 
 function renderRiwayat(daftar) {
-    const listEl = document.getElementById("riwayatList");
+    const tbodyEl = document.getElementById("riwayatTableBody");
     if (daftar.length === 0) {
-        listEl.innerHTML = '<p class="text-sm text-gray-400 italic text-center py-8">Belum ada riwayat penanganan.</p>';
+        tbodyEl.innerHTML = '<tr><td colspan="5" class="text-sm text-gray-400 italic text-center py-8">Belum ada riwayat penanganan.</td></tr>';
         return;
     }
 
-    listEl.innerHTML = daftar.map(p => `
-        <div class="animate-fade-in flex items-start gap-4 p-4 border border-gray-100 rounded-lg bg-white hover:shadow-sm transition">
-            <div class="w-9 h-9 bg-teal-50 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
-                <i class="ti ti-circle-check text-teal-700 text-lg"></i>
-            </div>
-            <div class="flex-1 min-w-0">
-                <div class="flex items-center gap-2 mb-1">
-                    <span class="font-semibold text-gray-900 text-sm">${p.nama}, ${p.umur} th</span>
-                    <span class="text-xs px-2 py-0.5 rounded border ${badgeClass(p.kondisi)} font-medium">
-                        ${labelKondisi(p.kondisi)}
-                    </span>
+    tbodyEl.innerHTML = daftar.map(p => `
+        <tr class="animate-fade-in hover:bg-gray-50/80 transition-colors border-b border-gray-100 last:border-none">
+            <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-teal-50 rounded-lg flex items-center justify-center text-teal-700 shrink-0">
+                        <i class="ti ti-circle-check text-base"></i>
+                    </div>
+                    <div>
+                        <div class="font-semibold text-gray-900 text-sm">${p.nama}</div>
+                        <div class="text-xs text-gray-500">${p.umur} th</div>
+                    </div>
                 </div>
-                <p class="text-xs text-gray-600 flex items-center gap-1 mb-1">
-                    <i class="ti ti-stethoscope text-xs"></i> ${p.penyakit || "—"}
-                </p>
-                <p class="text-xs text-gray-500 flex items-center gap-1">
-                    <i class="ti ti-map-pin text-xs"></i> ${p.alamat || "—"}
-                    <span class="mx-1">·</span>
-                    <i class="ti ti-clock text-xs"></i> ${fmtWaktu(p.waktu)}
-                </p>
-            </div>
-            <div class="hidden sm:block w-1 ${triageClass(p.kondisi)} rounded-full self-stretch"></div>
-        </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+                <span class="inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full border ${badgeClass(p.kondisi)} font-medium">
+                    <span class="w-2 h-2 rounded-full ${triageClass(p.kondisi)}"></span>
+                    ${labelKondisi(p.kondisi)}
+                </span>
+            </td>
+            <td class="px-6 py-4">
+                <div class="text-sm text-gray-700 flex items-center gap-1.5">
+                    <i class="ti ti-stethoscope text-gray-400 text-base"></i>
+                    <span class="truncate max-w-[200px]" title="${p.penyakit || ''}">${p.penyakit || "—"}</span>
+                </div>
+            </td>
+            <td class="px-6 py-4">
+                <div class="text-sm text-gray-500 flex items-center gap-1.5">
+                    <i class="ti ti-map-pin text-gray-400 text-base"></i>
+                    <span class="truncate max-w-[200px]" title="${p.alamat || ''}">${p.alamat || "—"}</span>
+                </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-500 flex items-center gap-1.5">
+                    <i class="ti ti-clock text-gray-400 text-base"></i>
+                    <span>${fmtWaktu(p.waktu)}</span>
+                </div>
+            </td>
+        </tr>
     `).join("");
 }
 

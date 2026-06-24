@@ -113,7 +113,7 @@ function renderAntrian(daftar) {
             <td class="px-4 py-3">
                 <div class="text-sm text-gray-700 flex items-center gap-1.5">
                     <i class="ti ti-stethoscope text-gray-400 text-base"></i>
-                    <span class="truncate max-w-[150px]" title="${p.penyakit || ''}">${p.penyakit || "—"}</span>
+                    <span class="truncate max-w-37.5" title="${p.penyakit || ''}">${p.penyakit || "—"}</span>
                 </div>
             </td>
             <td class="px-4 py-3 whitespace-nowrap">
@@ -134,7 +134,6 @@ document.getElementById("form-pasien").addEventListener("submit", async function
         alamat: document.getElementById("alamat").value.trim(),
         penyakit: document.getElementById("penyakit").value.trim(),
         kondisi: parseInt(document.getElementById("kondisi").value),
-        waktu: new Date()
     };
     try {
         const res = await fetch(`${API_URL}/pasien`, {
@@ -155,17 +154,12 @@ document.getElementById("form-pasien").addEventListener("submit", async function
     }
 });
 
-// ── Panggil Pasien ──
-// const riwayatLokal = []; // menyimpan riwayat sementara untuk tampilan kiri
-
 document.getElementById("btn-panggil").addEventListener("click", async function() {
     const ditanganiEl = document.getElementById("sedang-ditangani");
     const pesanEl = document.getElementById("pesan-panggil");
     try {
         const res = await fetch(`${API_URL}/proses`, { method: "POST" });
         if (res.status === 404) {
-            // const err = await res.json();
-            // pesanEl.textContent = err.detail || "Antrian kosong.";  
             ditanganiEl.innerHTML = '<p class="text-sm text-gray-500">Antrian kosong</p>';
             return;
         }
@@ -199,6 +193,4 @@ document.getElementById("btn-panggil").addEventListener("click", async function(
     }
 });
 
-// ── Polling ──
-// setInterval(loadAntrian, 1000);  
 loadAntrian();

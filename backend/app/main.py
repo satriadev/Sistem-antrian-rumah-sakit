@@ -20,7 +20,6 @@ class PasienInput(BaseModel):
     alamat: str
     penyakit: str
     kondisi: int
-    waktu: str
 
 
 @app.post("/pasien")
@@ -43,17 +42,10 @@ def lihat_antrian():
 @app.post("/proses")
 def proses_pasien():
     pasien = antrian.process()
-    print(f'pasien yang belum pop: {pasien}')
     if pasien is None:
         raise HTTPException(status_code=404, detail="Antrian Kosong")
     return {"dipanggil": pasien.to_dict()}
 
-@app.delete("/pasien/{id}")
-def hapus_pasien(id: str):
-    berhasil = antrian.delete(id)
-    if not berhasil:
-        raise HTTPException(status_code=404, detail="ID Tidak Ditemukan")
-    return {"status": "dihapus"}
 
 @app.get("/riwayat")
 def lihat_riwayat(search: str = Query("", min_length=0)):

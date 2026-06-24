@@ -88,18 +88,6 @@ class MinHeap():
             else:
                 break
     
-    def remove(self, item):
-        try:
-            idx = self.heap.index(item)
-        except ValueError:
-            return False
-        
-        last = self.heap.pop()
-        if idx < len(self.heap):
-            self.heap[idx] = last
-            self._heapify_up(idx)
-            self._heapify_down(idx)
-        return True
 
     def get_all_sorted(self):
         return sorted(self.heap, key=lambda x: (x.kondisi, x.waktu))
@@ -114,7 +102,6 @@ class DoubleLinkedList:
     def __init__(self):
         self.head = None
         self.tail = None
-        self.size = 0
     
     def prepend(self, data):
         new = Node(data)
@@ -124,7 +111,7 @@ class DoubleLinkedList:
             new.next = self.head
             self.head.prev = new
             self.head = new
-        self.size += 1
+
 
     def reverse(self):
         result = []
@@ -147,13 +134,11 @@ class DoubleLinkedList:
     def clearCache(self):
        self.head = None
        self.tail = None
-       self.size = 0
        return True
 
 class Antrian:
     def __init__(self):
         self.heap = MinHeap()
-        self.data = {}
         self.riwayat = DoubleLinkedList()
 
     def store(self, nama, umur, alamat, penyakit, kondisi):
@@ -161,24 +146,16 @@ class Antrian:
         waktu = time.time()
         pasien = Pasien(id, nama, umur, alamat, penyakit, kondisi, waktu)
         self.heap.insert(pasien)
-        self.data[id] = pasien
         return id
     
     def process(self):
         pasien = self.heap.extract_min()
         if pasien:
-            self.data.pop(pasien.id, None)
             self.riwayat.prepend(pasien)
         return pasien
     
     def show_all(self):
         return self.heap.get_all_sorted()
-    
-    def delete(self, id):
-        if id in self.data:
-            pasien = self.data.pop(id)
-            return self.heap.remove(pasien)
-        return False
     
     def search(self, keyword: str):
         return self.riwayat.linear_search(keyword)

@@ -120,5 +120,4 @@ document.getElementById("clearBtn").addEventListener("click", () => {
     }
 });
 
-// ── Inisialisasi ──
 loadRiwayat();

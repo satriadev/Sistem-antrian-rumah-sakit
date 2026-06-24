@@ -1,6 +1,5 @@
 const API_URL = "http://127.0.0.1:8000";
 
-// ── Date helper ──
 (function setDate() {
     const hari = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
     const bulan = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
@@ -9,7 +8,6 @@ const API_URL = "http://127.0.0.1:8000";
         `${hari[now.getDay()]}, ${now.getDate()} ${bulan[now.getMonth()]} ${now.getFullYear()}`;
 })();
 
-// ── Toast ──
 function showToast(msg, type = 'default') {
     const container = document.getElementById('toast-container');
     const toast = document.createElement('div');
@@ -24,7 +22,6 @@ function showToast(msg, type = 'default') {
     setTimeout(() => toast.remove(), 3000);
 }
 
-// ── Label & Styling ──
 function labelKondisi(k) {
     return {1:"Kritis",2:"Darurat",3:"Mendesak",4:"Ringan",5:"Non-darurat"}[k] || " - ";
 }
@@ -39,7 +36,6 @@ function badgeClass(k) {
     return map[k] || 'bg-gray-50 text-gray-600 border-gray-200';
 }
 
-// ── Format waktu dari ISO string ──
 function fmtWaktu(iso) {
     if (!iso) return "";
     const val = Number(iso);
@@ -47,7 +43,6 @@ function fmtWaktu(iso) {
     return d.toLocaleTimeString("id-ID", {hour:"2-digit", minute:"2-digit"});
 }
 
-// ── Load Antrian ──
 async function loadAntrian() {
     const tbodyEl = document.getElementById("antrian-tbody");
     try {
@@ -125,7 +120,6 @@ function renderAntrian(daftar) {
     `).join("");
 }
 
-// ── Tambah Pasien ──
 document.getElementById("form-pasien").addEventListener("submit", async function(e) {
     e.preventDefault();
     const payload = {
@@ -170,7 +164,6 @@ document.getElementById("btn-panggil").addEventListener("click", async function(
         const data = await res.json();
         const p = data.dipanggil;
 
-        // Tampilkan di panel "Sedang Ditangani"
         ditanganiEl.innerHTML = `
             <div class="flex items-center gap-2 mr-2">
                 <span class="relative flex h-3 w-3">

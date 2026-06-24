@@ -1,6 +1,5 @@
 const API_URL = "http://127.0.0.1:8000";
 
-// ── Label & Warna ──
 function labelKondisi(k) {
     return {1:"Kritis",2:"Darurat",3:"Mendesak",4:"Ringan",5:"Non-darurat"}[k] || "—";
 }
@@ -28,7 +27,6 @@ function fmtWaktu(iso) {
     return d.toLocaleString("id-ID", { day:"numeric", month:"short", year:"numeric", hour:"2-digit", minute:"2-digit" });
 }
 
-// ── Fetch Riwayat ──
 async function loadRiwayat(search = "") {
     const infoEl = document.getElementById("searchInfo");
     const tbodyEl = document.getElementById("riwayatTableBody");

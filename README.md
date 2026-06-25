@@ -77,14 +77,27 @@ Sistem-antrian-rumah-sakit/
 - Python 3.10+
 - Node.js (untuk build Tailwind CSS, opsional)
 
-### 1. Install Dependencies Backend
-
+### 1. Install Dependencies Backend dan Virtual Environments
+masukan command satu per satu
 ```bash
+python -m venv .venv
+
 pip install -r requrements.txt
 ```
 
-### 2. Jalankan Backend Server
+### 2. Aktifkan dan Jalankan Backend Server
+masukan command satu satu juga
 
+Windows:
+```bash
+.venv\Scripts\activate
+```
+
+jika menggunakan Linux/MacOs
+```bash
+source .venv/bin/activate
+```
+jika virtual env sudah aktif, lanjut jalankan FastAPI:
 ```bash
 fastapi dev
 ```

@@ -52,7 +52,7 @@ class MinHeap():
         self._heapify_up(len(self.heap) - 1)
 
     def extract_min(self):
-        if self.is_empty() > 0:
+        if self.is_empty():
             return None
         min_item = self.heap[0]
         last_item = self.heap.pop()
@@ -81,14 +81,12 @@ class MinHeap():
                 smallest = l
             if r < n and self.heap[r] < self.heap[smallest]:
                 smallest = r
-
             if smallest != i:
                 self.heap[i], self.heap[smallest] = self.heap[smallest], self.heap[i]
                 i = smallest
             else:
                 break
-    
-
+                
     def get_all_sorted(self):
         return sorted(self.heap, key=lambda x: (x.kondisi, x.waktu))
 
@@ -112,7 +110,6 @@ class DoubleLinkedList:
             self.head.prev = new
             self.head = new
 
-
     def reverse(self):
         result = []
         curr = self.tail
@@ -132,9 +129,9 @@ class DoubleLinkedList:
         return result
     
     def clearCache(self):
-       self.head = None
-       self.tail = None
-       return True
+        self.head = None
+        self.tail = None
+        return True
 
 class Antrian:
     def __init__(self):

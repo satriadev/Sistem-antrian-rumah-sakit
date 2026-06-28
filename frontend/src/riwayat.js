@@ -77,13 +77,13 @@ function renderRiwayat(daftar) {
             <td class="px-6 py-4">
                 <div class="text-sm text-gray-700 flex items-center gap-1.5">
                     <i class="ti ti-stethoscope text-gray-400 text-base"></i>
-                    <span class="truncate max-w-[200px]" title="${p.penyakit || ''}">${p.penyakit || "—"}</span>
+                    <span class="truncate max-w-50" title="${p.penyakit || ''}">${p.penyakit || "—"}</span>
                 </div>
             </td>
             <td class="px-6 py-4">
                 <div class="text-sm text-gray-500 flex items-center gap-1.5">
                     <i class="ti ti-map-pin text-gray-400 text-base"></i>
-                    <span class="truncate max-w-[200px]" title="${p.alamat || ''}">${p.alamat || "—"}</span>
+                    <span class="truncate max-w-50" title="${p.alamat || ''}">${p.alamat || "—"}</span>
                 </div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
